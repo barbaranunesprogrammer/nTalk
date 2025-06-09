@@ -1,7 +1,7 @@
+const autenticar = require('../middlewares/autenticador');
 
 module.exports = (app) => {
-    var autenticar = require('./../middlewares/autenticador'),
-        contatos = app.controllers.contatos;
+    const { contatos } = app.controllers;
 
     app.get('/contatos', autenticar, contatos.index);
     app.get('/contato/:id', autenticar, contatos.show);

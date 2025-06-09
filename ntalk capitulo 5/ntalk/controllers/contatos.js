@@ -1,54 +1,40 @@
-module.exports = function (app) {
-    var ContatoController = {
-        index: function (req, res) {
-            var usuario = req.session.usuario,
-                contatos = usuario.contatos
-            var params = { // Removido o 's' extra e adicionei 'var' para clareza
-                usuario: usuario,
-                contatos: contatos
-            };
-            res.render('contatos/index', params); // Adicionado ponto e vírgula
+module.exports = (app) => {
+    const ContatosController = {
+        index(req, res) {
+            const { usuario } = req.session;
+            const { contatos } = usuario;
+            res.render('contatos/index', { usuario, contatos });
         },
-
-        create: function (req, res) {
-            var contato = req.body.contato,
-                usuario = req.session.usuario;
-            usuario.contatos.push(contato); // CORRIGIDO: de 'contatos' para 'contato'
+        create(req, res) {
+            const { contato } = req.body;
+            const { usuario } = req.session;
+            usuario.contatos.push(contato);
             res.redirect('/contatos');
         },
-        show: function (req, res) { // Adicionado 'function' para consistência
-            var id = req.params.id,
-                contato = req.session.usuario.contatos[id],
-                params = { contato: contato, id: id };
-            res.render('contatos/show', params);
+        show(req, res) {
+            const { id } = req.params;
+            const { usuario } = req.session;
+            const contato = usuario.contatos[id];
+            res.render('contatos/show', { id, contato });
         },
-        edit: function (req, res) {
-            var id = req.params.id,
-                usuario = req.session.usuario,
-                contato = usuario.contatos[id], // CORRIGIDO: de 'contato.contatos' para 'usuario.contatos'
-                params = {
-                    usuario: usuario,
-                    contato: contato,
-                    id: id
-                };
-            res.render('contatos/edit', params);
+        edit(req, res) {
+            const { id } = req.params;
+            const { usuario } = req.session;
+            const contato = usuario.contatos[id];
+            res.render('contatos/edit', { id, contato, usuario });
         },
-        // FUNÇÃO UPDATE ADICIONADA
-        update: function (req, res) {
-            var id = req.params.id,
-                contato = req.body.contato, // Novo contato do formulário
-                usuario = req.session.usuario;
-
-            usuario.contatos[id] = contato; // Atualiza o contato existente
+        update(req, res) {
+            const { contato } = req.body;
+            const { usuario } = req.session;
+            usuario.contatos[req.params.id] = contato;
             res.redirect('/contatos');
         },
-        destroy: function (req, res) {
-            var usuario = req.session.usuario,
-                id = req.params.id;
+        destroy(req, res) {
+            const { id } = req.params;
+            const { usuario } = req.session;
             usuario.contatos.splice(id, 1);
             res.redirect('/contatos');
         }
     };
-
-    return ContatoController;
+    return ContatosController;
 };

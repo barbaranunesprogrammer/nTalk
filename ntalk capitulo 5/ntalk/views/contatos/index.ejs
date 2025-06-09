@@ -1,9 +1,9 @@
 <%- include('../header') %>
     <header>
-        <n2> Ntalk - Agenda de contatos </n2>
+        <h2>Ntalk - Agenda de contatos</h2>
     </header>
     <section>
-        <form action="/contato">
+        <form action="/contato" method="post">
             <input type="text" name="contato[nome]" placeholder="Nome">
             <input type="text" name="contato[email]" placeholder="E-mail">
             <button type="submit">Cadastrar</button>
