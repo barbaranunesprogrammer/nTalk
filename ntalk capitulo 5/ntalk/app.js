@@ -1,16 +1,21 @@
 const express = require('express');
 const path = require('path');
 const consign = require('consign');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const expressSession = require('express-session');
+const methodOverride = require('method-override')
+const error = require('./middlewares/error');
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(express.cookieParser('ntalk'));
-app.use(express.session());
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(cookieParser('ntalk'));
+app.use(expressSession({ resave: true, saveUninitialized: true, secret: 'ntalk' }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); // Esta linha deve ter { extended: true }
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 consign({})
   .include('models')
@@ -19,13 +24,9 @@ consign({})
   .into(app)
   ;
 
+app.use(error.notFound);
+app.use(error.serverError);
+
 app.listen(3000, () => {
   console.log('Ntalk no ar.');
 });
-module.exports = function (app) {
-  var home = app.controllers.home;
-  app.get('/', home.index);
-  app.post('/entrar', home.login);
-  app.get('/sair', home.logout);
-
-}
