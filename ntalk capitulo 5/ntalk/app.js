@@ -5,7 +5,12 @@ const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.cookieParser('ntalk'));
+app.use(express.session());
+app.use(express.json());
+app.use(express.urlencoded());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 consign({})
   .include('models')
@@ -17,3 +22,10 @@ consign({})
 app.listen(3000, () => {
   console.log('Ntalk no ar.');
 });
+module.exports = function (app) {
+  var home = app.controllers.home;
+  app.get('/', home.index);
+  app.post('/entrar', home.login);
+  app.get('/sair', home.logout);
+
+}
