@@ -1,14 +1,19 @@
 <%- include('../header'); %>
     <header>
-        <h2>Ntalk - Editar contato</h2>
+        <h2>Ntalk</h2>
+        <form action="/logout" method="post">
+            <button type="submit">Sair</button>
+        </form>
     </header>
     <section>
-        <form action="/contato/<%- id %>?_method=put" method="post">
-            <label>Nome:</label>
-            <input type="text" name="contato[nome]" value="<%- contato.nome %>">
-            <label>E-mail:</label>
-            <input type="text" name="contato[email]" value="<%- contato.email %>">
-            <button type="submit">Atualizar</button>
+        <form action="/chat" method="post">
+            <input type="text" name="sala" placeholder="Entre em uma sala">
+            <button type="submit">Entrar</button>
+        </form>
+        <div id="chat-messages"></div>
+        <form id="chat-form">
+            <input type="text" id="chat-message" placeholder="Sua mensagem">
+            <button type="submit">Enviar</button>
         </form>
     </section>
     <%- include('../exit'); %>
