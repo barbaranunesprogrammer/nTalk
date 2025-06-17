@@ -31,7 +31,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const cookieParser = require('cookie-parser');
-const config = require('./config');
+
 
 io.use((socket, next) => {
   const cookieData = socket.request.headers.cookie || '';
